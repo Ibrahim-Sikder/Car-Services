@@ -25,7 +25,7 @@ const handleCheckout = (event)=>{
         srvice_id: _id
     }
 
-    fetch('http://localhost:5000/order', {
+    fetch('https://car-services-server-amber.vercel.app/order', {
         method: "POST",
         headers: {
             'content-type': 'application/json'
