@@ -3,8 +3,8 @@ import Main from "../Layout/Main";
 import Home from "../pages/Home/Home/Home";
 import Login from "../pages/Login/Login";
 import SignUp from "../pages/SignUp/SignUp";
-import BookService from "../pages/BookService/BookService";
 import Bookings from "../pages/Bookings/Bookings";
+import Checkout from "../pages/BookService/Checkout";
 import PrivateRoute from "./PrivateRoute";
 
 const router = createBrowserRouter([
@@ -25,9 +25,9 @@ const router = createBrowserRouter([
             element: <SignUp></SignUp>
         },
         {
-          path: 'book/:id', 
-          element: <PrivateRoute><BookService></BookService></PrivateRoute>, 
-          loader: ({params}) => fetch(`https://car-doctor-server-smoky.vercel.app/services/${params.id}`)
+          path: 'checkout/:id', 
+          element: <PrivateRoute><Checkout></Checkout></PrivateRoute>,
+          loader: ({params})=>fetch(`http://localhost:5000/services/${params.id}`)
         },
         {
           path: 'bookings', 

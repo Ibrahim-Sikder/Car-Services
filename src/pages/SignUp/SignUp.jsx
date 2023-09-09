@@ -1,30 +1,43 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import img from '../../assets/images/login/login.svg'
+
+import SocialLogin from '../Shared/SocialLogin/SocialLogin';
 import { useContext } from 'react';
 import { AuthContext } from '../../providers/AuthProvider';
-import SocialLogin from '../Shared/SocialLogin/SocialLogin';
+import Swal from 'sweetalert2';
 
 const SignUp = () => {
+    const {createUser} = useContext(AuthContext)
+    const navigate = useNavigate()
+    const location = useLocation()
 
-    const { createUser } = useContext(AuthContext);
-
-    const handleSignUp = event => {
-        event.preventDefault();
+    const from = location.state?.from?.pathname || '/'
+    const handleSignUp = (event)=>{
+        event.preventDefault()
         const form = event.target;
         const name = form.name.value;
         const email = form.email.value;
         const password = form.password.value;
-        console.log(name, email, password)
-
-
+        const user = {name, email, password}
+        console.log(user)
         createUser(email, password)
-            .then(result => {
-                const user = result.user;
-                console.log('created user', user)
-            })
-            .catch(error => console.log(error))
+        .then((result)=>{
+            const user =result.user;
+            console.log(user)
+            Swal.fire({
+                position: 'top-center',
+                icon: 'success',
+                title: 'User created successfully ! ',
+                showConfirmButton: false,
+                timer: 1500
+              })
+              navigate(from, {replace: true })
+
+        })
+        .then((error)=>console.log('error', error))
 
     }
+
 
     return (
         <div className="hero min-h-screen bg-base-200">

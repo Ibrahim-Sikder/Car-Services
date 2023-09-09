@@ -1,33 +1,39 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import img from '../../assets/images/login/login.svg'
+
+import SocialLogin from '../Shared/SocialLogin/SocialLogin';
 import { useContext } from 'react';
 import { AuthContext } from '../../providers/AuthProvider';
-import SocialLogin from '../Shared/SocialLogin/SocialLogin';
+import Swal from 'sweetalert2';
 
 const Login = () => {
+    const {signIn} = useContext(AuthContext)
+    const location = useLocation()
+    const navigate = useNavigate()
 
-    const { signIn } = useContext(AuthContext);
-    const location = useLocation();
-    const navigate = useNavigate();
+    const from = location.state?.from?.pathname || "/";
 
-    const from = location.state?.from?.pathname || '/';
-
-    const handleLogin = event => {
-        event.preventDefault();
+    const handleLogin = (event)=>{
+        event.preventDefault()
         const form = event.target;
         const email = form.email.value;
         const password = form.password.value;
-        
         signIn(email, password)
-            .then(result => {
-                const user = result.user;
-                console.log(user);
-                navigate(from, { replace: true })
+        .then((result)=>{
+            const user =result.user;
+            console.log(user)
+            Swal.fire({
+                position: 'top-center',
+                icon: 'success',
+                title: 'Sign In successfully ! ',
+                showConfirmButton: false,
+                timer: 1500
+              })
+              navigate(from, {replace: true })
+          
+        })
+        .then((error)=>console.log('error', error))
 
-                
-
-            })
-            .catch(error => console.log(error));
     }
 
     return (
